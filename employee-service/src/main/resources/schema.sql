@@ -1,0 +1,13 @@
+CREATE TABLE IF NOT EXISTS EMPLOYEES (
+id INT NOT NULL AUTO_INCREMENT,
+ First_Name VARCHAR(255), 
+ Last_Name VARCHAR(255), 
+ Role VARCHAR(255), 
+ Email  VARCHAR(255), 
+ Location  VARCHAR(255), 
+ Deptartment_Code  VARCHAR(10), 
+ Status  VARCHAR(255), 
+ Salary  NUMERIC(100),
+ PRIMARY KEY (id));
+
+

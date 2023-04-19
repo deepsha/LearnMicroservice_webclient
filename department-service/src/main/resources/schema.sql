@@ -1,0 +1,8 @@
+CREATE TABLE IF NOT EXISTS DEPARTMENTS (
+id INT NOT NULL AUTO_INCREMENT,
+ Department_Name VARCHAR(255), 
+ Department_Code VARCHAR(255), 
+ Head_Of_Department VARCHAR(255), 
+ PRIMARY KEY (id));
+
+
