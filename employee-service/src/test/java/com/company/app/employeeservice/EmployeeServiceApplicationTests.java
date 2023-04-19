@@ -15,6 +15,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.reactive.server.WebTestClient;
 
 import com.company.app.employeeservice.controller.EmployeeController;
+import com.company.app.employeeservice.dto.DepartmentDTO;
 import com.company.app.employeeservice.entity.Employee;
 import com.company.app.employeeservice.repository.EmployeeRepository;
 import com.company.app.employeeservice.service.EmployeeService;
@@ -26,6 +27,7 @@ import reactor.core.publisher.Mono;
 class EmployeeServiceApplicationTests {
 
 	private final String URL="http://localhost:8082/company/employee";
+	private final String client_URL="http://localhost:8082/company/employee/department";
 	
 	@Autowired
 	private WebTestClient webTestClient;
@@ -74,7 +76,7 @@ class EmployeeServiceApplicationTests {
 				.expectBodyList(Employee.class);
 	}
 	@Test
-	@Order(2)
+	@Order(3)
 	public void testGetEmployeeDetailsById() {
 		
 		Employee employee=new Employee("Philip", "Latra", "Senior", "tarzan@gmail.com", "NewYork",
@@ -97,5 +99,33 @@ class EmployeeServiceApplicationTests {
 		.jsonPath("$.employeeStatus").isEqualTo("Active");
 	}
 
-
+	// test cases to test webclient call to department
+	@Test
+	@Order(4)
+	public void testGetAllDepartment() {
+		
+		webTestClient.get().uri(client_URL)
+		.accept(MediaType.APPLICATION_JSON)
+		.exchange()
+		.expectStatus().isOk()
+		.expectHeader().contentType(MediaType.APPLICATION_JSON)
+		.expectBodyList(DepartmentDTO.class);
+	}
+	
+	@Test
+	@Order(5)
+	public void testGetDepartmentDetailsByDeptCode() {
+		
+		
+		String uri=client_URL+"/{id}";				
+		webTestClient.get().uri(uri,"B13")
+				.accept(MediaType.APPLICATION_JSON)
+				.exchange()
+				.expectStatus().isOk()
+				.expectHeader().contentType(MediaType.APPLICATION_JSON)
+				.expectBody()
+		.jsonPath("$.departmentName").isEqualTo("Geology")
+		.jsonPath("$.departmentCode").isEqualTo("B13")
+		.jsonPath("$.headOfDepartment").isEqualTo("Dr SK bose");
+	}
 }
