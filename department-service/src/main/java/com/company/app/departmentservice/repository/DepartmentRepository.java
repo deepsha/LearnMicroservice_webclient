@@ -9,6 +9,6 @@ import reactor.core.publisher.Mono;
 @Repository
 public interface DepartmentRepository extends R2dbcRepository<Department, Integer>{
 
-	Mono<Department> findByDepartmentCode(String code);
+	Mono<Department> findByDepartmentCode(String departmentCode);
 
 }

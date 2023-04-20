@@ -47,6 +47,13 @@ public class EmployeeService {
 		
 		return employeeRepository.save(employee);
 	}
+	public Mono<Employee> deleteEmployeeById(Integer empId) {
+		
+		return employeeRepository.findById(empId).flatMap(user->employeeRepository.delete(user)
+				.then(Mono.just(user)));
+	}
+	
+	
 	//calling department-service using webclient from employee-service
 	public Flux<DepartmentDTO> getAllDepartmentDetails() {
 
@@ -105,6 +112,13 @@ public class EmployeeService {
 	
 		 
 		return employeelist;
+	}
+
+
+
+	public Mono<DepartmentDTO> deleteDepartmentByDeptCode(String deptCode) {
+		return this.webClient.get().uri("/department/{deptCode}",deptCode)
+				.retrieve().bodyToMono(DepartmentDTO.class);
 	}
 
 

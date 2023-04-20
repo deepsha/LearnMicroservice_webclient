@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.company.app.departmentservice.entity.Department;
 import com.company.app.departmentservice.service.DepartmentService;
+
 
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -62,4 +64,13 @@ public class DepartmentController {
 		 return departmentService.updateDepartment(new Department(department.getDepartmentName(), department.getDepartmentCode(), department.getHeadOfDepartment()));
 	}
 
+	@DeleteMapping("/department/{id}")
+	@ResponseStatus(HttpStatus.OK)
+	public ResponseEntity<Mono<Department>> deleteDepartmentById(@PathVariable("id") String deptCode)
+	{
+
+		Mono<Department> e = departmentService.deleteDepartmentById(deptCode);
+		HttpStatus status = (e != null) ? HttpStatus.OK : HttpStatus.NOT_FOUND;
+		return new ResponseEntity<>(e, status);
+	}
 }

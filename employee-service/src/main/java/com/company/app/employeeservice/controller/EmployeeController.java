@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -69,6 +70,16 @@ public class EmployeeController {
 		HttpStatus status = (e != null) ? HttpStatus.OK : HttpStatus.NOT_FOUND;
 		return new ResponseEntity<>(e, status);
 	}
+	
+	@DeleteMapping("/employee/{id}")
+	@ResponseStatus(HttpStatus.OK)
+	public ResponseEntity<Mono<Employee>> deleteEmployeeById(@PathVariable("id") int id)
+	{
+
+		Mono<Employee> e = employeeService.deleteEmployeeById(id);
+		HttpStatus status = (e != null) ? HttpStatus.OK : HttpStatus.NOT_FOUND;
+		return new ResponseEntity<>(e, status);
+	}
 	//calling department-service using webclient from employee-service
 	
 	@GetMapping("/employee/department")
@@ -116,6 +127,17 @@ public class EmployeeController {
 	{
 		logger.info("createDepartment:"+department);
 		Mono<DepartmentDTO> e = employeeService.updateDepartment(department);
+		HttpStatus status = (e != null) ? HttpStatus.OK : HttpStatus.NOT_FOUND;
+		return new ResponseEntity<>(e, status);
+
+	}
+	
+	@DeleteMapping("/employee/department/{deptCode}")
+	@ResponseStatus(HttpStatus.OK)
+	public  ResponseEntity<Mono<DepartmentDTO>> deleteDepartmentByDeptCode(@PathVariable String deptCode)
+	{
+		logger.info("deleteDepartmentByDeptCode:"+deptCode);
+		Mono<DepartmentDTO> e = employeeService.deleteDepartmentByDeptCode(deptCode);
 		HttpStatus status = (e != null) ? HttpStatus.OK : HttpStatus.NOT_FOUND;
 		return new ResponseEntity<>(e, status);
 
